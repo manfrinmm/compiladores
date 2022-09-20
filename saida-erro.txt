@@ -1,0 +1,5 @@
+bison -d calculadora.y
+flex calculadora.l
+gcc calculadora.tab.c lex.yy.c -o code.out
+./code.out test.3m
+Erro na linha 1: syntax error, unexpected TOKEN_LITERAL, expecting TOKEN_IDENT or TOKEN_PRINT
