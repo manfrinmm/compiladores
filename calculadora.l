@@ -3,6 +3,7 @@
 
 %{
   #include <stdio.h>
+  #include "calculadora.tab.h"
 %}
 
 %option yylineno
@@ -14,23 +15,23 @@ L  [a-zA-Z_]
 
 %%
 [ \t\r\n]       {} /* Joga espaços fora */
-"print"         { printf("TOKEN_PRINT\n"); } /* Saída de dados */
+"print"         { return TOKEN_PRINT; } /* Saída de dados */
 
-{D}             { printf("TOKEN_INTEGER <%s>\n", yytext); } /* Int */
-{D}+\.{D}+      { printf("TOKEN_FLOAT <%s>\n", yytext); } /* Float */
-{L}({L}|{D})*   { printf("TOKEN_LITERAL <%s>\n", yytext); } /* Expressões. Outra maneira: [a-zA-Z_][a-zA-Z0-9_] */
+{D}             { return TOKEN_INTEGER; } /* Int */
+{D}+\.{D}+      { return TOKEN_FLOAT;  } /* Float */
+{L}({L}|{D})*   { return TOKEN_LITERAL;  } /* Expressões. Outra maneira: [a-zA-Z_][a-zA-Z0-9_] */
 
-"="             { printf("TOKEN_EQUAL\n"); } /* Operadores matemáticos */
-"*"             { printf("TOKEN_MULTIPLY\n"); } /* Operadores matemáticos */
-"/"             { printf("TOKEN_DIVIDE\n"); } /* Operadores matemáticos */
-"-"             { printf("TOKEN_MINUS\n"); } /* Operadores matemáticos */
-"+"             { printf("TOKEN_PLUS\n"); } /* Operadores matemáticos */
-"("             { printf("TOKEN_OP\n"); } /* Operadores matemáticos */
-")"             { printf("TOKEN_CP\n"); } /* Operadores matemáticos */
+"="             { return '='; } /* Operadores matemáticos */
+"*"             { return '*'; } /* Operadores matemáticos */
+"/"             { return '/'; } /* Operadores matemáticos */
+"-"             { return '-'; } /* Operadores matemáticos */
+"+"             { return '+'; } /* Operadores matemáticos */
+"("             { return '('; } /* Operadores matemáticos */
+")"             { return ')'; } /* Operadores matemáticos */
 
 .            { printf("Character %c not recognized.\n", yytext[0]); } /* Carácter não reconhecido */
-
 %%
+
 int yywrap() {
   return 1;
 }
@@ -45,7 +46,7 @@ int main(int argc, char *argv[]) {
   FILE *f = fopen(argv[1], "r");
   
   yyin = f;
-  yylex();
+  yyparse();
 
   fclose(f);
 
