@@ -18,3 +18,7 @@ Analisador Léxico - Calculadora
   - `gcc lex.yy.c -o code.out`
 - Executar o:
   - `./code.out test.3m`
+
+---
+
+Trabalho: https://birl-language.github.io/

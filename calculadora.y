@@ -11,15 +11,16 @@
   extern int yylineno;
 %}
 
-%union {
+%union {  
+    token_args args;
     struct node *node;
 }
 
 %define parse.error verbose
 
-%token TOKEN_IDENT TOKEN_PRINT TOKEN_INTEGER TOKEN_FLOAT 
+%token <args> TOKEN_IDENT TOKEN_FLOAT TOKEN_INTEGER
 %token TOKEN_LITERAL TOKEN_EQUAL TOKEN_MULTIPLY TOKEN_DIVIDE 
-%token TOKEN_MINUS TOKEN_PLUS TOKEN_OP TOKEN_CP
+%token TOKEN_MINUS TOKEN_PLUS TOKEN_OP TOKEN_CP TOKEN_PRINT
 
 %type <node> program stmts stmt assignment arithmetic term term2 factor
 
@@ -35,6 +36,7 @@ program : stmts {
           program -> children[0] = $1;
 
           // Chamada da árvore abstrata
+      	print(program);
           // Chamada da verificação semântica
           // Chamada da geração de código
         }
@@ -64,7 +66,7 @@ stmt : assignment {
 assignment : TOKEN_IDENT '=' arithmetic { 
                $$ = create_node (ASSIGN, 2);
                $$ -> children[0] = create_node (IDENT, 0);
-               $$ -> children[0] -> name = NULL;
+               $$ -> children[0] -> name = $1.ident;
                $$ -> children[1] = $3;
            }
            ;
@@ -118,15 +120,15 @@ factor : '(' arithmetic ')' {
        }
        | TOKEN_IDENT {
           $$ = create_node (IDENT, 0);
-          $$ -> name = NULL;
+          $$ -> name = $1.ident;
        }
        | TOKEN_INTEGER  {
           $$ = create_node (INTEGER, 0);
-          $$ -> value = 0;
+          $$ -> intv = $1.intv;
        }
        | TOKEN_FLOAT {
           $$ = create_node (FLOAT, 0);
-          $$ -> value = 0;
+          $$ -> dblv = $1.dblv;
        }
        ;
 
