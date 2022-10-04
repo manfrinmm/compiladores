@@ -3,6 +3,7 @@
 
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   #include "header.h"
 
   int yyerror (const char *s);
@@ -42,10 +43,16 @@ program : stmts {
         }
         ;
 
-stmts : stmt stmts {
-          $$ = create_node (STMT, 2);
-          $$ -> children[0] = $1;
-          $$ -> children[1] = $2;
+stmts : stmts stmt {
+          node *origin = $1;
+
+          origin = realloc (origin, sizeof(node) + sizeof(node*) * origin->childCount);
+          
+          origin->children[origin->childCount] = $2;
+          
+          origin->childCount++;
+
+          $$ = origin;
       }  
       | stmt {
           $$ = create_node (STMT, 1);
@@ -54,13 +61,18 @@ stmts : stmt stmts {
       ;
       
 stmt : assignment {
-          $$ = create_node (GENERIC, 1);
-          $$ -> children[0] = $1;
+          $$ = $1;
+          // Instruções abaixo representa uma arvore abstrata
+          // $$ = create_node (GENERIC, 1);
+          // $$ -> children[0] = $1;
      }
      | TOKEN_PRINT arithmetic { 
           $$ = create_node (PRINT, 1);
           $$ -> children[0] = $2;
      }
+     // | //Declaração função
+     // | //Declaração laços
+     // | //Declaração condicionais
      ;
 
 assignment : TOKEN_IDENT '=' arithmetic { 
@@ -82,8 +94,10 @@ arithmetic : arithmetic '+' term {
                $$ -> children[1] = $3;
            }    
            | term {
-               $$ = create_node (GENERIC, 1);
-               $$ -> children[0] = $1;
+               $$ = $1;
+               // Instruções abaixo representa uma arvore abstrata
+               // $$ = create_node (GENERIC, 1);
+               // $$ -> children[0] = $1;
            }
            ;
 
@@ -98,8 +112,10 @@ term : term '*' term2 {
           $$ -> children[1] = $3;
      } 
      | term2 {
-          $$ = create_node (GENERIC, 1);
-          $$ -> children[0] = $1;
+          $$ = $1;
+          // Instruções abaixo representa uma arvore abstrata
+          // $$ = create_node (GENERIC, 1);
+          // $$ -> children[0] = $1;
      }
      ;
 
@@ -109,14 +125,18 @@ term2 : term2 '^' factor {
           $$ -> children[1] = $3;
      }
      | factor {
-          $$ = create_node (GENERIC, 1);
-          $$ -> children[0] = $1;
+          $$ = $1;
+          // Instruções abaixo representa uma arvore abstrata
+          // $$ = create_node (GENERIC, 1);
+          // $$ -> children[0] = $1;
      }
      ;
 
 factor : '(' arithmetic ')' { 
-          $$ = create_node (PARENT, 1);
-          $$ -> children[0] = $2;
+          $$ = $2;
+          // Instruções abaixo representa uma arvore abstrata
+          // $$ = create_node (PARENT, 1);
+          // $$ -> children[0] = $2;
        }
        | TOKEN_IDENT {
           $$ = create_node (IDENT, 0);

@@ -22,3 +22,7 @@ Analisador Léxico - Calculadora
 ---
 
 Trabalho: https://birl-language.github.io/
+
+---
+
+Gramática da linguagem C: https://www.quut.com/c/ANSI-C-grammar-y.html

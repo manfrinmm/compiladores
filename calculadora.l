@@ -24,6 +24,7 @@ L  [a-zA-Z_]
 
 "="             { return '='; } /* Operadores matemáticos */
 "*"             { return '*'; } /* Operadores matemáticos */
+"^"             { return '^'; } /* Operadores matemáticos */
 "/"             { return '/'; } /* Operadores matemáticos */
 "-"             { return '-'; } /* Operadores matemáticos */
 "+"             { return '+'; } /* Operadores matemáticos */
