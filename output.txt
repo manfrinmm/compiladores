@@ -1,5 +1,5 @@
 graph G {
-N25[label="program"];
+N30[label="program"];
 N3[label="stmt"];
 N1[label="="];
 N2[label="A"];
@@ -45,9 +45,19 @@ N19[label="B"];
 N20 -- N19;
 N21 -- N20;
 N3 -- N21;
-N24[label="print"];
-N23[label="C"];
-N24 -- N23;
-N3 -- N24;
-N25 -- N3;
+N29[label="conditional"];
+N25[label="greater_than"];
+N23[label="A"];
+N25 -- N23;
+N24[label="C"];
+N25 -- N24;
+N29 -- N25;
+N28[label="stmt"];
+N27[label="print"];
+N26[label="C"];
+N27 -- N26;
+N28 -- N27;
+N29 -- N28;
+N3 -- N29;
+N30 -- N3;
 }

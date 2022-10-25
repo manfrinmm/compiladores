@@ -20,17 +20,14 @@
 %define parse.error verbose
 
 %token <args> TOKEN_IDENT TOKEN_FLOAT TOKEN_INTEGER
-%token TOKEN_LITERAL TOKEN_EQUAL TOKEN_MULTIPLY TOKEN_DIVIDE 
-%token TOKEN_MINUS TOKEN_PLUS TOKEN_OP TOKEN_CP TOKEN_PRINT
+%token TOKEN_PRINT TOKEN_OR TOKEN_AND TOKEN_IF TOKEN_EQUAL TOKEN_GREATER_THAN_OR_EQUAL TOKEN_LESS_THAN_OR_EQUAL TOKEN_NOT_EQUAL
 
 %type <node> program stmts stmt assignment arithmetic term term2 factor
+%type <node> if logicalFactor logicalExpression logicalExpressionTerm
 
 %start program
 
-
 %%
-
- // $n -> Sendo `n` o parâmetro de entrada do analisador léxico
 
 program : stmts {
           node *program = create_node (PROGRAM, 1);
@@ -72,7 +69,9 @@ stmt : assignment {
      }
      // | //Declaração função
      // | //Declaração laços
-     // | //Declaração condicionais
+     | if {
+          $$ = $1;
+     }
      ;
 
 assignment : TOKEN_IDENT '=' arithmetic { 
@@ -82,6 +81,68 @@ assignment : TOKEN_IDENT '=' arithmetic {
                $$ -> children[1] = $3;
            }
            ;
+
+if: TOKEN_IF '(' logicalExpression ')' '{' stmts '}' {
+               $$ = create_node (CONDITIONAL, 2);
+               $$ -> children[0] = $3;
+               $$ -> children[1] = $6;
+          }
+          ;
+
+logicalExpression: logicalExpression TOKEN_OR logicalExpressionTerm {
+                    $$ = create_node (LOGICAL_OR, 2);
+                    $$ -> children[0] = $1;
+                    $$ -> children[1] = $3;
+                 }
+                 | logicalExpressionTerm {
+                    $$ = $1;
+                 }
+                 ;
+
+logicalExpressionTerm: logicalExpressionTerm TOKEN_AND logicalFactor {
+                    $$ = create_node (LOGICAL_AND, 2);
+                    $$ -> children[0] = $1;
+                    $$ -> children[1] = $3;
+                 }
+                 | logicalFactor {
+                    $$ = $1;
+                 }
+                 ;
+
+logicalFactor: '(' logicalExpression ')' {
+               $$ = $2;
+             }
+             | arithmetic '>' arithmetic {
+               $$ = create_node (GREATER_THAN, 2);
+               $$ -> children[0] = $1;
+               $$ -> children[1] = $3;
+             }
+             | arithmetic '<' arithmetic {
+               $$ = create_node (LESS_THAN, 2);
+               $$ -> children[0] = $1;
+               $$ -> children[1] = $3;
+             }
+             | arithmetic TOKEN_EQUAL arithmetic {
+               $$ = create_node (EQUAL, 2);
+               $$ -> children[0] = $1;
+               $$ -> children[1] = $3;
+             }
+             | arithmetic TOKEN_NOT_EQUAL arithmetic {
+               $$ = create_node (NOT_EQUAL, 2);
+               $$ -> children[0] = $1;
+               $$ -> children[1] = $3;
+             }
+             | arithmetic TOKEN_LESS_THAN_OR_EQUAL arithmetic {
+               $$ = create_node (LESS_THAN_OR_EQUAL, 2);
+               $$ -> children[0] = $1;
+               $$ -> children[1] = $3;
+             }
+             | arithmetic TOKEN_GREATER_THAN_OR_EQUAL arithmetic {
+               $$ = create_node (GREATER_THAN_OR_EQUAL, 2);
+               $$ -> children[0] = $1;
+               $$ -> children[1] = $3;
+             }
+             ;
 
 arithmetic : arithmetic '+' term { 
                $$ = create_node (SUM, 2);

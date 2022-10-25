@@ -14,6 +14,15 @@ enum node_type
   MULTIPLY,
   DIVIDE,
   PRINT,
+  EQUAL,
+  NOT_EQUAL,
+  GREATER_THAN,
+  LESS_THAN,
+  GREATER_THAN_OR_EQUAL,
+  LESS_THAN_OR_EQUAL,
+  CONDITIONAL,
+  LOGICAL_AND,
+  LOGICAL_OR,
 };
 
 static const char *node_type_names[] = {
@@ -31,6 +40,15 @@ static const char *node_type_names[] = {
     "*",
     "/",
     "print",
+    "equal",
+    "not_equal",
+    "greater_than",
+    "less_than",
+    "greater_than_or_equal",
+    "less_than_or_equal",
+    "conditional",
+    "logical_and",
+    "logical_or",
 };
 
 typedef struct

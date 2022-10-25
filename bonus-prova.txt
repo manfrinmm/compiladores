@@ -1,2 +1,0 @@
-- existem gramaticas com contexto?
-- quantidade máxima de parâmetro de uma função?
