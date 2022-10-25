@@ -37,7 +37,9 @@ L  [a-zA-Z_]
 "or"            { return TOKEN_OR;  } /* Operadores lógicos */
 
 
-"if"            { return TOKEN_IF;  } /* Operadores lógicos */
+"if"            { return TOKEN_IF;  } /* Condicional */
+"else"          { return TOKEN_IF_ELSE;  } /* Condicional */
+"while"          { return TOKEN_WHILE;  } /* Condicional */
 
 "=="						{ return TOKEN_EQUAL; } /* Operadores lógicos */
 ">"							{ return '>';  } /* Operadores lógicos */

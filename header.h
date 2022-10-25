@@ -23,6 +23,7 @@ enum node_type
   CONDITIONAL,
   LOGICAL_AND,
   LOGICAL_OR,
+  LOOP
 };
 
 static const char *node_type_names[] = {
@@ -49,7 +50,7 @@ static const char *node_type_names[] = {
     "conditional",
     "logical_and",
     "logical_or",
-};
+    "loop"};
 
 typedef struct
 {

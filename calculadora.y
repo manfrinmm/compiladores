@@ -20,10 +20,12 @@
 %define parse.error verbose
 
 %token <args> TOKEN_IDENT TOKEN_FLOAT TOKEN_INTEGER
-%token TOKEN_PRINT TOKEN_OR TOKEN_AND TOKEN_IF TOKEN_EQUAL TOKEN_GREATER_THAN_OR_EQUAL TOKEN_LESS_THAN_OR_EQUAL TOKEN_NOT_EQUAL
+%token TOKEN_PRINT TOKEN_OR TOKEN_AND TOKEN_IF TOKEN_IF_ELSE TOKEN_WHILE 
+%token TOKEN_EQUAL TOKEN_GREATER_THAN_OR_EQUAL TOKEN_LESS_THAN_OR_EQUAL TOKEN_NOT_EQUAL
+
 
 %type <node> program stmts stmt assignment arithmetic term term2 factor
-%type <node> if logicalFactor logicalExpression logicalExpressionTerm
+%type <node> if while logicalFactor logicalExpression logicalExpressionTerm
 
 %start program
 
@@ -69,6 +71,9 @@ stmt : assignment {
      }
      // | //Declaração função
      // | //Declaração laços
+     | while {
+          $$ = $1;
+     }
      | if {
           $$ = $1;
      }
@@ -84,6 +89,20 @@ assignment : TOKEN_IDENT '=' arithmetic {
 
 if: TOKEN_IF '(' logicalExpression ')' '{' stmts '}' {
                $$ = create_node (CONDITIONAL, 2);
+               $$ -> children[0] = $3;
+               $$ -> children[1] = $6;
+          }
+          |
+          TOKEN_IF '(' logicalExpression ')' '{' stmts '}' TOKEN_IF_ELSE '{' stmts '}' {
+               $$ = create_node (CONDITIONAL, 3);
+               $$ -> children[0] = $3;
+               $$ -> children[1] = $6;
+               $$ -> children[2] = $10;
+          }
+          ;
+
+while: TOKEN_WHILE '(' logicalExpression ')' '{' stmts '}' {
+               $$ = create_node (LOOP, 2);
                $$ -> children[0] = $3;
                $$ -> children[1] = $6;
           }
