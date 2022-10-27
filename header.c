@@ -26,14 +26,16 @@ const char *get_label(node *no)
     sprintf(aux, "%d", no->intv);
 
     return aux;
-
   case FLOAT:
     sprintf(aux, "%f", no->dblv);
 
     return aux;
   case IDENT:
     return no->name;
+  case LITERAL:
+    sprintf(aux, "%s", no->literal);
 
+    return aux;
   default:
     return node_type_names[no->type];
   }

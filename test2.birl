@@ -1,0 +1,14 @@
+B = 20.7^a
+C = (A + B) / B * C
+D = A + B
+
+ELE QUE A GENTE QUER? ( A > C + 1) {
+  D = 1
+  CE QUER VER ISSO? D  + 1
+} NAO VAI DAR NAO {
+  D = 1
+}
+
+NEGATIVA BAMBAM (A < 2) {
+  A = A + 1
+}

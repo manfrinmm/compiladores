@@ -1,6 +1,5 @@
 all:
-	bison -d calculadora.y
-	flex calculadora.l
-	gcc calculadora.tab.c lex.yy.c header.c -o code.out
-	./code.out test2.3m
-
+	bison -d birl.y
+	flex birl.l
+	gcc birl.tab.c lex.yy.c header.c -o birl.out
+	./birl.out test2.birl

@@ -1,9 +1,16 @@
-Analisador Léxico - Calculadora
-
 ## Arquivos
 
-`calculadora.l`: Arquivo léxico
-`calculadora.y`: Arquivo "gramática"
+`birl.l`: Arquivo léxico
+`birl.y`: Arquivo "gramática"
+
+### Testes
+
+`test2.birl`: Compilação correta
+`test2-error.birl`: Erro sintático
+
+## Executar
+
+- `./birl.out nomeDoArquivo.birl`
 
 ## Compilador
 
@@ -13,16 +20,17 @@ Analisador Léxico - Calculadora
 ### Passos
 
 - Compilar o flex:
-  - `flex calculadora.l`
+  - `flex birl.l`
 - Compilar o léxico:
-  - `gcc lex.yy.c -o code.out`
+  - `gcc lex.yy.c -o birl.out`
 - Executar o:
-  - `./code.out test.3m`
+  - `./birl.out test2.birl`
 
 ---
 
-Trabalho: https://birl-language.github.io/
+# Referência
 
----
-
-Gramática da linguagem C: https://www.quut.com/c/ANSI-C-grammar-y.html
+- Trabalho: https://birl-language.github.io/
+- Códigos:
+  - https://github.com/thborges/cmp2019
+  - https://github.com/manfrinmm/compiladores
