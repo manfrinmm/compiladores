@@ -1,4 +1,4 @@
-Analisador Léxico - Calculadora
+Projeto em: https://github.com/manfrinmm/compiladores/tree/Trabalho
 
 ## Arquivos
 

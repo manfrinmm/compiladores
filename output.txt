@@ -13,7 +13,7 @@ N7 -- N8;
 N6[label="^"];
 N4[label="20.700000"];
 N6 -- N4;
-N5[label="a"];
+N5[label="A"];
 N6 -- N5;
 N7 -- N6;
 N3 -- N7;

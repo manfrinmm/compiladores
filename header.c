@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
 
 #include "header.h"
 
@@ -36,6 +38,43 @@ const char *get_label(node *no)
 
   default:
     return node_type_names[no->type];
+  }
+}
+
+int symbol_quantity = 0;
+symbol table_symbol[100];
+
+symbol *create_symbol(char *name, int token)
+{
+  symbol *created_symbol = &table_symbol[symbol_quantity];
+
+  created_symbol->name = name;
+  created_symbol->token = token;
+
+  symbol_quantity++;
+
+  return created_symbol;
+}
+
+bool exists_symbol(char *name)
+{
+  for (int i = 0; i < symbol_quantity; i++)
+  {
+    if (strcmp(table_symbol[i].name, name) == 0)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+void debug()
+{
+  printf("Símbolos: \n");
+  for (int i = 0; i < symbol_quantity; i++)
+  {
+    printf("\t%s\n", table_symbol[i].name);
   }
 }
 

@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 enum node_type
 {
   PROGRAM,
@@ -54,6 +56,13 @@ static const char *node_type_names[] = {
 
 typedef struct
 {
+  int token;
+  char *name;
+
+} symbol;
+
+typedef struct
+{
   double dblv;
   int intv;
   char *ident;
@@ -76,9 +85,13 @@ struct node
 
 typedef struct node node;
 
+bool exists_symbol(char *name);
+symbol *create_symbol(char *name, int token);
+
 node *create_node(enum node_type, int quantityChildren);
 
 void add_node(node node_target, enum node_type);
 
+void debug();
 void print(node *root);
 void print_rec(FILE *f, node *root);
