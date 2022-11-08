@@ -69,6 +69,19 @@ bool exists_symbol(char *name)
   return false;
 }
 
+int search_symbol(char *name)
+{
+  for (int i = 0; i < symbol_quantity; i++)
+  {
+    if (strcmp(table_symbol[i].name, name) == 0)
+    {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 void debug()
 {
   printf("Símbolos: \n");
@@ -97,4 +110,34 @@ void print(node *root)
   fprintf(file, "}");
 
   fclose(file);
+}
+
+void check_declared_variable(node **root, node *node)
+{
+  // node *nr = *root;
+
+  if (node->type == ASSIGN)
+  {
+    int s = search_symbol(node->children[0]->name);
+
+    if (s != -1)
+    {
+      table_symbol[s].exists = true;
+    }
+  }
+}
+
+void visitor_leaf_first(node **root, visitor_action act)
+{
+  node *r = *root;
+
+  for (int i = 0; i < r->childCount; i++)
+  {
+    visitor_leaf_first(&r->children[i], act);
+
+    if (act)
+    {
+      act(root, r->children[i]);
+    }
+  }
 }

@@ -39,6 +39,7 @@ program : stmts {
       	print(program);
           debug();
           // Chamada da verificação semântica
+          visitor_leaf_first(&program, check_declared_variable);
           // Chamada da geração de código
         }
         ;
