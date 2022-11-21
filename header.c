@@ -42,6 +42,7 @@ const char *get_label(node *no)
 }
 
 int symbol_quantity = 0;
+int error_count = 0;
 symbol table_symbol[100];
 
 symbol *create_symbol(char *name, int token)
@@ -112,17 +113,32 @@ void print(node *root)
   fclose(file);
 }
 
-void check_declared_variable(node **root, node *node)
+void check_declared_variable(node **root, node *node2)
 {
-  // node *nr = *root;
+  node *nodeRoot = *root;
 
-  if (node->type == ASSIGN)
+  if (node2->type == ASSIGN)
   {
-    int s = search_symbol(node->children[0]->name);
+    int s = search_symbol(node2->children[0]->name);
 
     if (s != -1)
     {
       table_symbol[s].exists = true;
+    }
+  }
+  else if (node2->type == IDENT)
+  {
+    if (nodeRoot->type == ASSIGN && node2 == nodeRoot->children[0])
+    {
+      return;
+    }
+
+    int s = search_symbol(node2->name);
+
+    if (s == -1 || !table_symbol[s].exists)
+    {
+      printf("%d: erro: simbolo %s não declarado.\n", 0, node2->name);
+      error_count++;
     }
   }
 }
