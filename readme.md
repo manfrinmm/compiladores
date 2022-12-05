@@ -1,7 +1,10 @@
+Projeto em: https://github.com/manfrinmm/compiladores/tree/Trabalho
+
 ## Arquivos
 
 `birl.l`: Arquivo léxico
 `birl.y`: Arquivo "gramática"
+`output.txt`: Árvore Abstrata
 
 ### Testes
 

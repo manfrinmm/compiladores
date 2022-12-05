@@ -37,8 +37,11 @@ program : stmts {
 
           // Chamada da árvore abstrata
       	print(program);
+          debug();
           // Chamada da verificação semântica
+          visitor_leaf_first(&program, check_declared_variable);
           // Chamada da geração de código
+          // visitor_left_root(&program, code_generator);
         }
         ;
 
@@ -84,6 +87,9 @@ assignment : TOKEN_IDENT '=' arithmetic {
                $$ -> children[0] = create_node (IDENT, 0);
                $$ -> children[0] -> name = $1.ident;
                $$ -> children[1] = $3;
+               if (!exists_symbol($1.ident)){
+                    create_symbol($1.ident, TOKEN_IDENT);
+               }
            }
            ;
 
@@ -221,6 +227,9 @@ factor : '(' arithmetic ')' {
        | TOKEN_IDENT {
           $$ = create_node (IDENT, 0);
           $$ -> name = $1.ident;
+          if (!exists_symbol($1.ident)){
+               create_symbol($1.ident, TOKEN_IDENT);
+          }
        }
        | TOKEN_INTEGER  {
           $$ = create_node (INTEGER, 0);

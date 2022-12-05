@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
 
 #include "header.h"
 
@@ -41,6 +43,57 @@ const char *get_label(node *no)
   }
 }
 
+int symbol_quantity = 0;
+int error_count = 0;
+symbol table_symbol[100];
+
+symbol *create_symbol(char *name, int token)
+{
+  symbol *created_symbol = &table_symbol[symbol_quantity];
+
+  created_symbol->name = name;
+  created_symbol->token = token;
+
+  symbol_quantity++;
+
+  return created_symbol;
+}
+
+bool exists_symbol(char *name)
+{
+  for (int i = 0; i < symbol_quantity; i++)
+  {
+    if (strcmp(table_symbol[i].name, name) == 0)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+int search_symbol(char *name)
+{
+  for (int i = 0; i < symbol_quantity; i++)
+  {
+    if (strcmp(table_symbol[i].name, name) == 0)
+    {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+void debug()
+{
+  printf("Símbolos: \n");
+  for (int i = 0; i < symbol_quantity; i++)
+  {
+    printf("\t%s\n", table_symbol[i].name);
+  }
+}
+
 void print_rec(FILE *f, node *root)
 {
   fprintf(f, "N%d[label=\"%s\"];\n", root->id, get_label(root));
@@ -60,4 +113,85 @@ void print(node *root)
   fprintf(file, "}");
 
   fclose(file);
+}
+
+void check_declared_variable(node **root, node *node2)
+{
+  node *nodeRoot = *root;
+
+  if (node2->type == ASSIGN)
+  {
+    int s = search_symbol(node2->children[0]->name);
+
+    if (s != -1)
+    {
+      table_symbol[s].exists = true;
+    }
+  }
+  else if (node2->type == IDENT)
+  {
+    if (nodeRoot->type == ASSIGN && node2 == nodeRoot->children[0])
+    {
+      return;
+    }
+
+    int s = search_symbol(node2->name);
+
+    if (s == -1 || !table_symbol[s].exists)
+    {
+      printf("%d: erro: simbolo %s não declarado.\n", 0, node2->name);
+      error_count++;
+    }
+  }
+}
+
+void visitor_leaf_first(node **root, visitor_action act)
+{
+  node *r = *root;
+
+  for (int i = 0; i < r->childCount; i++)
+  {
+    visitor_leaf_first(&r->children[i], act);
+
+    if (act)
+    {
+      act(root, r->children[i]);
+    }
+  }
+}
+
+void visitor_left_root(node **root, visitor_action act)
+{
+  node *r = *root;
+
+  visitor_left_root(&r->children[0], act);
+  act(root, r);
+
+  for (int i = 1; i < r->childCount; i++)
+  {
+    if (act)
+    {
+      act(root, r->children[i]);
+    }
+  }
+}
+
+void code_generator(node **root, node *no)
+{
+  if (no->type == IDENT)
+  {
+    printf("%s\n", no->name);
+  }
+  else if (no->type == ASSIGN)
+  {
+    printf(" = ");
+  }
+  else if (no->type == INTEGER)
+  {
+    printf(" %d ", no->intv);
+  }
+  else if (no->type == FLOAT)
+  {
+    printf(" %f ", no->dblv);
+  }
 }

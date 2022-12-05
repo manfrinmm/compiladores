@@ -1,5 +1,6 @@
-B = 20.7^a
-C = (A + B) / B * C
+A = 10
+B = 20.7^A
+C = (A + B) / B
 D = A + B
 
 ELE QUE A GENTE QUER? ( A > C + 1) {
