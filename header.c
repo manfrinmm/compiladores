@@ -157,3 +157,39 @@ void visitor_leaf_first(node **root, visitor_action act)
     }
   }
 }
+
+void visitor_left_root(node **root, visitor_action act)
+{
+  node *r = *root;
+
+  visitor_left_root(&r->children[0], act);
+  act(root, r);
+
+  for (int i = 1; i < r->childCount; i++)
+  {
+    if (act)
+    {
+      act(root, r->children[i]);
+    }
+  }
+}
+
+void code_generator(node **root, node *no)
+{
+  if (no->type == IDENT)
+  {
+    printf("%s\n", no->name);
+  }
+  else if (no->type == ASSIGN)
+  {
+    printf(" = ");
+  }
+  else if (no->type == INTEGER)
+  {
+    printf(" %d ", no->intv);
+  }
+  else if (no->type == FLOAT)
+  {
+    printf(" %f ", no->dblv);
+  }
+}

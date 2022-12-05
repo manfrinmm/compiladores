@@ -99,7 +99,9 @@ void add_node(node node_target, enum node_type);
 
 void check_declared_variable(node **root, node *node);
 void visitor_leaf_first(node **root, visitor_action act);
+void visitor_left_root(node **root, visitor_action act);
 
 void debug();
 void print(node *root);
 void print_rec(FILE *f, node *root);
+void code_generator(node **root, node *no);
