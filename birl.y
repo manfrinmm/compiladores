@@ -91,13 +91,13 @@ assignment : TOKEN_IDENT '=' arithmetic {
            }
            ;
 
-if: TOKEN_IF '(' logicalExpression ')' '{' stmts '}' {
+if: TOKEN_IF '(' logicalExpression ')' '{' stmt '}' {
                $$ = create_node (CONDITIONAL, 2);
                $$ -> children[0] = $3;
                $$ -> children[1] = $6;
           }
           |
-          TOKEN_IF '(' logicalExpression ')' '{' stmts '}' TOKEN_IF_ELSE '{' stmts '}' {
+          TOKEN_IF '(' logicalExpression ')' '{' stmts '}' TOKEN_IF_ELSE '{' stmt '}' {
                $$ = create_node (CONDITIONAL, 3);
                $$ -> children[0] = $3;
                $$ -> children[1] = $6;
@@ -105,7 +105,7 @@ if: TOKEN_IF '(' logicalExpression ')' '{' stmts '}' {
           }
           ;
 
-while: TOKEN_WHILE '(' logicalExpression ')' '{' stmts '}' {
+while: TOKEN_WHILE '(' logicalExpression ')' '{' stmt '}' {
                $$ = create_node (LOOP, 2);
                $$ -> children[0] = $3;
                $$ -> children[1] = $6;
