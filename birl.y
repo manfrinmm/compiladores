@@ -40,8 +40,6 @@ program : stmts {
           debug();
           // Chamada da verificação semântica
           visitor_leaf_first(&program, check_declared_variable);
-          // Chamada da geração de código
-          // visitor_left_root(&program, code_generator);
         }
         ;
 

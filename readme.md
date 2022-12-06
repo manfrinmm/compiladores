@@ -9,7 +9,7 @@ Projeto em: https://github.com/manfrinmm/compiladores/tree/Trabalho
 ### Testes
 
 `test2.birl`: Compilação correta
-`test2-error.birl`: Erro sintático
+`test2-error.birl`: Erro semântico -> Variável não declarada
 
 ## Executar
 
