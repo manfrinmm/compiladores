@@ -9,6 +9,6 @@ ELE QUE A GENTE QUER? ( A > C + 1) {
   D = 1
 }
 
-NEGATIVA BAMBAM (A MENOR 2) {
-  A += 1
+NEGATIVA BAMBAM (A < 2) {
+  A = A + 1
 }
